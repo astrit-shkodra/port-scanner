@@ -190,7 +190,7 @@ def grab_banner(target, port, timeout=2):
             if banner:
                 return banner[:100]
 
-        except:
+        except (socket.error, OSError):
             continue
    
     return None
