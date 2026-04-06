@@ -198,15 +198,14 @@ def grab_banner(target, port, timeout=2):
 
 
 
-def scan_port_range(target, start_port, end_port, max_workers=100, timeout=1):
+def scan_ports(target, ports, max_workers=100, timeout=1):
     """
 
-    Scanne une plage de ports avec multi-threading contrôle.
+    Scanne une liste de ports avec multi-threading contrôle.
 
     Args:
         target: Adresse IP ou hostname de la cible
-        start_port: Premier port à scanner
-        end_port: Dernier port à scanner
+        ports: Liste de ports à scanner
         max_workers: Nombre de threads simultanés
         timeout: Délai d'attente par port
 
@@ -221,7 +220,7 @@ def scan_port_range(target, start_port, end_port, max_workers=100, timeout=1):
         # On crée un dictionnaire {future: port}
         futures = {
                 executor.submit(scan_port, target, port, timeout): port
-                for port in range(start_port, end_port + 1)
+                for port in ports 
         }
 
         # On récupère les résultats au fur et à mesure
@@ -240,7 +239,7 @@ def scan_port_range(target, start_port, end_port, max_workers=100, timeout=1):
 
 
 # Test rapide
-if __name__ == "__main__":
+if __name__ =="__main__":
     args = parse_arguments()
 
     target = args.target
@@ -261,7 +260,7 @@ if __name__ == "__main__":
     print(f"{'='*50}")
     
     # Étape 1 : Scanner les ports
-    open_ports = scan_port_range(target, ports[0], ports[-1], max_workers, timeout)
+    open_ports = scan_ports(target, ports, max_workers, timeout)
 
     # Étape 2 : Récupérer les bannière si demandé
     results = {
