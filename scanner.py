@@ -228,7 +228,8 @@ def scan_ports(target, ports, max_workers=100, timeout=1):
             port = futures[future]
             try:
                 if future.result(): # Si le port est ouvert
-                    print(f"[+] Port {port} ouvert")
+                    service = COMMON_PORTS.get(port, "inconnu")
+                    print(f"[+] Port {port} ({service})")
                     open_ports.append(port)
             except Exception as e:
                 print(f"[-] Erreur sur port {port}: {e}")
@@ -250,10 +251,7 @@ if __name__ =="__main__":
 
     print(f"{'='*50}")
     print(f"Cible       : {target}")
-    if len(ports) <= 10:
-        print(f"Ports       : {ports}")
-    else:
-        print(f"Ports       : {ports[0]}-{ports[-1]} ({len(ports)} ports)")
+    print(f"Ports       : {args.ports} ({len(ports)} ports)")
     print(f"Threads     : {max_workers}")
     print(f"Timeout     : {timeout}s")
     print(f"Banner      : {'Oui' if grab else 'Non'}")
